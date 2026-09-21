@@ -1,0 +1,5 @@
+chromadb
+pypdf
+sentence-transformers
+langchain-chroma
+tf-keras
