@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Research Agent — AI-Powered Deep Research</title>
+    <meta name="description" content="An autonomous AI research agent that synthesizes comprehensive reports from multiple sources.">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-mesh">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <!-- ====== SIDEBAR ====== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <div class="logo-icon">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; font-size: 1.15rem;">bolt</span>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">Nexus</span>
+                    <span class="logo-subtitle">Research Agent</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle Sidebar">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+
+        <div class="sidebar-nav-label">Navigation</div>
+        <nav class="sidebar-nav">
+            <button class="nav-item active" data-page="research" id="nav-research">
+                <span class="material-symbols-outlined nav-icon-mat" style="font-variation-settings: 'FILL' 1;">science</span>
+                <span class="nav-label">Research</span>
+            </button>
+            <button class="nav-item" data-page="history" id="nav-history">
+                <span class="material-symbols-outlined nav-icon-mat">history</span>
+                <span class="nav-label">History</span>
+                <span class="nav-badge" id="history-count">0</span>
+            </button>
+            <button class="nav-item" data-page="analytics" id="nav-analytics">
+                <span class="material-symbols-outlined nav-icon-mat">analytics</span>
+                <span class="nav-label">Analytics</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-section">
+            <div class="section-label">Recent Searches</div>
+            <div class="recent-list" id="recent-list">
+                <div class="recent-empty">No searches yet</div>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-status">
+                <span class="status-dot-live"></span>
+                <span>Agent Online</span>
+                <span class="version-tag">v2.0</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Sidebar Toggle -->
+    <button class="mobile-menu-btn" id="mobile-menu-btn">
+        <span class="material-symbols-outlined">menu</span>
+    </button>
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <main class="main-content" id="main-content">
+
+        <!-- ====== TOP BAR ====== -->
+        <header class="top-bar">
+            <div class="top-bar-search">
+                <span class="material-symbols-outlined top-search-icon">search</span>
+                <input type="text" placeholder="Search research logs, reports, or data vectors..." class="top-search-input" id="global-search">
+            </div>
+            <div class="top-bar-actions">
+                <button class="top-bar-btn" id="top-new-research-btn" title="New Research">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+                    <span class="top-btn-label">New Research</span>
+                </button>
+                <button class="top-bar-icon-btn" title="Notifications">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="notif-dot"></span>
+                </button>
+                <div class="top-bar-avatar">
+                    <span class="avatar-initials">UA</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==================== PAGE: RESEARCH ==================== -->
+        <div class="page active" id="page-research">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Research <span class="text-accent">Lab</span></h1>
+                    <p class="page-subtitle">Autonomous multi-vector intelligence synthesis and deep literature analysis.</p>
+                </div>
+                <div class="header-stats">
+                    <div class="mini-stat">
+                        <span class="material-symbols-outlined mini-stat-icon">science</span>
+                        <div class="mini-stat-info">
+                            <span class="mini-stat-value" id="stat-total-inline">0</span>
+                            <span class="mini-stat-label">Researches</span>
+                        </div>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="material-symbols-outlined mini-stat-icon">description</span>
+                        <div class="mini-stat-info">
+                            <span class="mini-stat-value" id="stat-pdfs-inline">0</span>
+                            <span class="mini-stat-label">PDFs</span>
+                        </div>
+                    </div>
+                    <div class="mini-stat mini-stat-online">
+                        <span class="status-dot-live"></span>
+                        <span class="mini-stat-label" style="color: var(--success); font-weight: 600;">Agent Online</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="research-grid">
+                <!-- Main Research Card -->
+                <div class="content-card research-main-card">
+                    <form id="research-form">
+                        <!-- Upload Area -->
+                        <div class="upload-area" id="upload-area">
+                            <input type="file" id="pdf-upload-input" accept=".pdf" style="display: none;">
+                            <div class="upload-icon-wrap">
+                                <span class="material-symbols-outlined upload-mat-icon">upload_file</span>
+                            </div>
+                            <h3 class="upload-title" id="upload-text">Drop research papers & PDFs</h3>
+                            <p class="upload-hint">Drag and drop or <span class="upload-browse">browse files</span> to ingest into vector context</p>
+                            <span class="upload-formats">PDF up to 50MB</span>
+                        </div>
+                        
+                        <!-- Extracted Topics -->
+                        <div id="topics-section" class="topics-section hidden">
+                            <div class="topics-label">
+                                <span class="material-symbols-outlined topics-label-icon">auto_awesome</span>
+                                Extracted Topics
+                            </div>
+                            <div id="topics-container" class="topics-container"></div>
+                        </div>
+
+                        <!-- Search Input -->
+                        <div class="search-section">
+                            <label class="search-label">Initialize Research Query</label>
+                            <div class="search-row">
+                                <div class="search-input-wrapper">
+                                    <span class="material-symbols-outlined search-icon" style="font-variation-settings: 'FILL' 1;">psychology</span>
+                                    <input type="text" id="topic" name="topic" placeholder="e.g., What are Physics-informed neural networks?" required autocomplete="off">
+                                </div>
+                                <button type="submit" id="submit-btn" class="submit-btn">
+                                    <span class="material-symbols-outlined btn-icon" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                                    <span class="btn-text">Research</span>
+                                    <div class="spinner"></div>
+                                </button>
+                            </div>
+                            <div class="search-meta">
+                                <span class="search-meta-left">
+                                    <span class="material-symbols-outlined" style="font-size: 14px; color: var(--accent);">auto_awesome</span>
+                                    Deep vector synthesis active
+                                </span>
+                                <span class="search-meta-right" id="estimated-time"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Results Container -->
+            <div id="results-container" class="results-section hidden">
+                <div class="results-grid">
+                    <!-- Agent Activity Panel -->
+                    <div class="agent-activity">
+                        <div class="activity-header">
+                            <div class="activity-header-left">
+                                <span class="material-symbols-outlined activity-icon">terminal</span>
+                                <h3>Agent Activity Log</h3>
+                            </div>
+                            <span class="status-dot-live"></span>
+                        </div>
+                        <div id="log-container" class="log-container"></div>
+                    </div>
+
+                    <!-- Report Section -->
+                    <div class="report-section">
+                        <div class="report-glow"></div>
+                        <div class="report-header">
+                            <div class="report-header-left">
+                                <span class="report-badge">Synthesized Report</span>
+                                <h2 id="report-title">Research Report</h2>
+                            </div>
+                            <div class="report-actions">
+                                <button class="report-action-btn" id="copy-btn" title="Copy Markdown">
+                                    <span class="material-symbols-outlined">content_copy</span>
+                                </button>
+                                <button class="report-action-btn" title="Bookmark">
+                                    <span class="material-symbols-outlined">bookmark</span>
+                                </button>
+                                <button class="report-action-btn" title="Download">
+                                    <span class="material-symbols-outlined">download</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="report-content" class="markdown-body"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="error-container" class="hidden"></div>
+        </div>
+
+        <!-- ==================== PAGE: HISTORY ==================== -->
+        <div class="page" id="page-history">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Research <span class="text-accent">History</span></h1>
+                    <p class="page-subtitle">Browse your past research sessions and reports.</p>
+                </div>
+                <button class="clear-history-btn" id="clear-history-btn">
+                    <span class="material-symbols-outlined" style="font-size: 16px;">delete_forever</span>
+                    Clear All
+                </button>
+            </div>
+
+            <div class="history-grid" id="history-grid">
+                <div class="empty-state" id="history-empty">
+                    <div class="empty-icon-wrap">
+                        <span class="material-symbols-outlined empty-mat-icon">history</span>
+                    </div>
+                    <h3>No Research History Yet</h3>
+                    <p>Your completed researches will appear here.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE: ANALYTICS ==================== -->
+        <div class="page" id="page-analytics">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Research <span class="text-accent">Analytics</span></h1>
+                    <p class="page-subtitle">Insights and statistics from your research sessions.</p>
+                </div>
+            </div>
+
+            <div class="analytics-grid">
+                <div class="stat-card stat-primary">
+                    <div class="stat-icon">
+                        <span class="material-symbols-outlined">science</span>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-total">0</span>
+                        <span class="stat-label">Total Researches</span>
+                    </div>
+                    <div class="stat-glow"></div>
+                </div>
+                <div class="stat-card stat-accent">
+                    <div class="stat-icon">
+                        <span class="material-symbols-outlined">description</span>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-pdfs">0</span>
+                        <span class="stat-label">PDFs Uploaded</span>
+                    </div>
+                    <div class="stat-glow"></div>
+                </div>
+                <div class="stat-card stat-success">
+                    <div class="stat-icon">
+                        <span class="material-symbols-outlined">sell</span>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-topics">0</span>
+                        <span class="stat-label">Topics Extracted</span>
+                    </div>
+                    <div class="stat-glow"></div>
+                </div>
+                <div class="stat-card stat-pink">
+                    <div class="stat-icon">
+                        <span class="material-symbols-outlined">timer</span>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-avgtime">0s</span>
+                        <span class="stat-label">Avg. Research Time</span>
+                    </div>
+                    <div class="stat-glow"></div>
+                </div>
+            </div>
+
+            <!-- CHARTS ROW -->
+            <div class="charts-row">
+                <div class="content-card chart-card">
+                    <div class="chart-header">
+                        <div class="chart-header-left">
+                            <span class="material-symbols-outlined chart-icon">bar_chart</span>
+                            <h3>Research Activity</h3>
+                        </div>
+                        <span class="chart-subtitle">Last 7 days</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-activity"></canvas>
+                    </div>
+                </div>
+                <div class="content-card chart-card">
+                    <div class="chart-header">
+                        <div class="chart-header-left">
+                            <span class="material-symbols-outlined chart-icon">show_chart</span>
+                            <h3>Duration Trend</h3>
+                        </div>
+                        <span class="chart-subtitle">Seconds per research</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-duration"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECOND ROW: Doughnut + Topic Cloud -->
+            <div class="charts-row">
+                <div class="content-card chart-card chart-card-sm">
+                    <div class="chart-header">
+                        <div class="chart-header-left">
+                            <span class="material-symbols-outlined chart-icon">donut_large</span>
+                            <h3>Source Usage</h3>
+                        </div>
+                        <span class="chart-subtitle">Tool distribution</span>
+                    </div>
+                    <div class="chart-wrapper chart-wrapper-doughnut">
+                        <canvas id="chart-sources"></canvas>
+                    </div>
+                </div>
+                <div class="content-card chart-card">
+                    <div class="chart-header">
+                        <div class="chart-header-left">
+                            <span class="material-symbols-outlined chart-icon">sell</span>
+                            <h3>Top Researched Topics</h3>
+                        </div>
+                    </div>
+                    <div class="topic-cloud" id="topic-cloud">
+                        <p class="text-muted">Research some topics to see insights here.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THIRD ROW: Performance + Timeline -->
+            <div class="charts-row">
+                <div class="content-card chart-card">
+                    <div class="chart-header">
+                        <div class="chart-header-left">
+                            <span class="material-symbols-outlined chart-icon">trending_up</span>
+                            <h3>Report Length Trend</h3>
+                        </div>
+                        <span class="chart-subtitle">Characters per report</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-length"></canvas>
+                    </div>
+                </div>
+                <div class="content-card chart-card">
+                    <div class="chart-header">
+                        <div class="chart-header-left">
+                            <span class="material-symbols-outlined chart-icon">timeline</span>
+                            <h3>Research Timeline</h3>
+                        </div>
+                    </div>
+                    <div class="timeline" id="analytics-timeline">
+                        <p class="text-muted">No research activity yet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // =============================================
+        // STATE MANAGEMENT (localStorage)
+        // =============================================
+        const STORAGE_KEY = 'nexus_research_history';
+        const STATS_KEY = 'nexus_research_stats';
+
+        function getHistory() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+            catch { return []; }
+        }
+        function saveHistory(history) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+        function getStats() {
+            try { return JSON.parse(localStorage.getItem(STATS_KEY)) || { totalResearches: 0, pdfsUploaded: 0, topicsExtracted: 0, totalTime: 0 }; }
+            catch { return { totalResearches: 0, pdfsUploaded: 0, topicsExtracted: 0, totalTime: 0 }; }
+        }
+        function saveStats(stats) {
+            localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+        }
+
+        function addToHistory(query, markdown, timeTaken) {
+            const history = getHistory();
+            history.unshift({
+                id: Date.now(),
+                query: query,
+                markdown: markdown,
+                preview: markdown.replace(/[#*_\[\]`>]/g, '').substring(0, 150) + '...',
+                timestamp: new Date().toISOString(),
+                timeTaken: timeTaken
+            });
+            // Keep max 50 entries
+            if (history.length > 50) history.pop();
+            saveHistory(history);
+
+            const stats = getStats();
+            stats.totalResearches++;
+            stats.totalTime += timeTaken;
+            saveStats(stats);
+
+            refreshUI();
+        }
+
+        // =============================================
+        // PAGE NAVIGATION
+        // =============================================
+        const pages = document.querySelectorAll('.page');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        function switchPage(pageName) {
+            pages.forEach(p => p.classList.remove('active'));
+            navItems.forEach(n => n.classList.remove('active'));
+            
+            document.getElementById(`page-${pageName}`).classList.add('active');
+            document.querySelector(`[data-page="${pageName}"]`).classList.add('active');
+
+            if (pageName === 'history') renderHistory();
+            if (pageName === 'analytics') renderAnalytics();
+
+            // Close sidebar on mobile
+            if (window.innerWidth < 900) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => switchPage(item.dataset.page));
+        });
+
+        // Sidebar toggle
+        document.getElementById('sidebar-toggle').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+            document.getElementById('main-content').classList.toggle('sidebar-collapsed');
+        });
+
+        // Mobile menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        // Top bar new research button
+        document.getElementById('top-new-research-btn').addEventListener('click', () => {
+            switchPage('research');
+            document.getElementById('topic').focus();
+        });
+
+        // =============================================
+        // RESEARCH FORM HANDLER
+        // =============================================
+        let researchStartTime = 0;
+
+        document.getElementById('research-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const topic = document.getElementById('topic').value.trim();
+            if (!topic) return;
+
+            researchStartTime = Date.now();
+            const submitBtn = document.getElementById('submit-btn');
+            const resultsContainer = document.getElementById('results-container');
+            const reportContent = document.getElementById('report-content');
+            const errorContainer = document.getElementById('error-container');
+            const logContainer = document.getElementById('log-container');
+            const reportTitle = document.getElementById('report-title');
+            const estimatedTimeEl = document.getElementById('estimated-time');
+
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+            resultsContainer.classList.remove('hidden');
+            errorContainer.classList.add('hidden');
+            reportContent.classList.add('streaming');
+            reportContent.innerHTML = '<p style="color: var(--text-muted); font-style: italic;">Waiting for agent to compile the report...</p>';
+            reportTitle.textContent = topic;
+            logContainer.innerHTML = '';
+            
+            resultsContainer.style.animation = 'none';
+            resultsContainer.offsetHeight; 
+            resultsContainer.style.animation = 'fadeSlideUp 0.6s ease forwards';
+
+            // Live Elapsed Timer
+            let timerSeconds = 0;
+            estimatedTimeEl.innerHTML = `<span class="timer-badge"><span class="material-symbols-outlined" style="font-size: 13px;">timer</span> Elapsed: 0s</span>`;
+            const timerInterval = setInterval(() => {
+                timerSeconds = Math.round((Date.now() - researchStartTime) / 1000);
+                estimatedTimeEl.innerHTML = `<span class="timer-badge"><span class="material-symbols-outlined" style="font-size: 13px;">timer</span> Elapsed: ${timerSeconds}s</span>`;
+            }, 1000);
+
+            let fullMarkdown = '';
+            let hasError = false;
+
+            try {
+                const response = await fetch('/research_stream', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: topic })
+                });
+
+                if (!response.ok) throw new Error('Failed to start research stream');
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder('utf-8');
+                let buffer = '';
+                let isFirstToken = true;
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop();
+                    
+                    for (const line of lines) {
+                        if (!line.trim()) continue;
+                        try {
+                            const data = JSON.parse(line);
+                            
+                            if (data.type === 'log') {
+                                const logEl = document.createElement('div');
+                                const isErr = data.content.includes('❌') || data.content.includes('Error');
+                                logEl.className = isErr ? 'log-entry error' : 'log-entry';
+                                const now = new Date();
+                                const ts = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                                logEl.innerHTML = `<span class="log-timestamp">[${ts}]</span> <span class="log-text">${escapeHtml(data.content)}</span>`;
+                                logContainer.appendChild(logEl);
+                                logContainer.scrollTop = logContainer.scrollHeight;
+                            } 
+                            else if (data.type === 'final_answer' || data.type === 'token') {
+                                if (isFirstToken) {
+                                    reportContent.innerHTML = '';
+                                    isFirstToken = false;
+                                }
+                                fullMarkdown += data.content;
+                                marked.setOptions({ gfm: true, breaks: true });
+                                reportContent.innerHTML = marked.parse(fullMarkdown);
+                                reportContent.dataset.markdown = fullMarkdown;
+                                
+                                if (data.type === 'final_answer') {
+                                    wrapSectionsInCards(reportContent);
+                                }
+                            } 
+                            else if (data.type === 'error') {
+                                hasError = true;
+                                reportContent.innerHTML = `
+                                    <div class="error-card">
+                                        <span class="material-symbols-outlined error-card-icon">error</span>
+                                        <div class="error-card-title">Research Interrupted</div>
+                                        <div class="error-card-msg">${escapeHtml(data.content)}</div>
+                                        <button type="button" class="retry-btn" onclick="document.getElementById('research-form').requestSubmit();">
+                                            <span class="material-symbols-outlined">refresh</span>
+                                            Retry Research
+                                        </button>
+                                    </div>
+                                `;
+                            }
+                        } catch(parseErr) {
+                            console.error("Parse error:", parseErr, line);
+                        }
+                    }
+                }
+            } catch (error) {
+                hasError = true;
+                reportContent.innerHTML = `
+                    <div class="error-card">
+                        <span class="material-symbols-outlined error-card-icon">wifi_off</span>
+                        <div class="error-card-title">Connection Error</div>
+                        <div class="error-card-msg">${escapeHtml(error.message)}</div>
+                        <button type="button" class="retry-btn" onclick="document.getElementById('research-form').requestSubmit();">
+                            <span class="material-symbols-outlined">refresh</span>
+                            Retry Research
+                        </button>
+                    </div>
+                `;
+            } finally {
+                clearInterval(timerInterval);
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                reportContent.classList.remove('streaming');
+                
+                const timeTaken = Math.round((Date.now() - researchStartTime) / 1000);
+                if (!hasError && fullMarkdown.trim()) {
+                    estimatedTimeEl.innerHTML = `<span style="color: var(--success); font-size: 0.75rem;">✓ Completed in ${timeTaken}s</span>`;
+                    addToHistory(topic, fullMarkdown, timeTaken);
+                } else if (hasError) {
+                    estimatedTimeEl.innerHTML = `<span style="color: #ef4444; font-size: 0.75rem;">Failed after ${timeTaken}s</span>`;
+                } else {
+                    estimatedTimeEl.textContent = '';
+                }
+            }
+        });
+
+        // =============================================
+        // COPY MARKDOWN
+        // =============================================
+        document.getElementById('copy-btn').addEventListener('click', () => {
+            const md = document.getElementById('report-content').dataset.markdown;
+            if (md) {
+                navigator.clipboard.writeText(md).then(() => {
+                    const btn = document.getElementById('copy-btn');
+                    btn.querySelector('.material-symbols-outlined').textContent = 'check_circle';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.querySelector('.material-symbols-outlined').textContent = 'content_copy';
+                        btn.classList.remove('copied');
+                    }, 2000);
+                });
+            }
+        });
+        
+        // =============================================
+        // UPLOAD LOGIC
+        // =============================================
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('pdf-upload-input');
+        const uploadText = document.getElementById('upload-text');
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+        uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            if (e.dataTransfer.files.length) handleFileUpload(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) handleFileUpload(e.target.files[0]);
+        });
+
+        async function handleFileUpload(file) {
+            if (!file.name.toLowerCase().endsWith('.pdf')) {
+                uploadText.innerHTML = '<span style="color: var(--error);">⚠️ Please upload a valid PDF file.</span>';
+                return;
+            }
+
+            uploadArea.classList.add('processing');
+            uploadText.innerHTML = `<span style="color: var(--primary-light);">Processing <strong>"${file.name}"</strong>... Extracting topics</span>`;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/upload_pdf', { method: 'POST', body: formData });
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update stats
+                    const stats = getStats();
+                    stats.pdfsUploaded++;
+                    if (data.topics) stats.topicsExtracted += data.topics.length;
+                    saveStats(stats);
+
+                    const topicsSection = document.getElementById('topics-section');
+                    const topicsContainer = document.getElementById('topics-container');
+                    
+                    if (data.topics && data.topics.length > 0) {
+                        uploadText.innerHTML = `<span style="color: var(--success);">✅ <strong>"${file.name}"</strong> processed! Select a topic:</span>`;
+                        topicsContainer.innerHTML = '';
+                        
+                        data.topics.forEach(topic => {
+                            const chip = document.createElement('button');
+                            chip.type = 'button';
+                            chip.className = 'topic-chip';
+                            chip.textContent = topic;
+                            chip.onclick = () => {
+                                document.getElementById('topic').value = topic;
+                                topicsContainer.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('active'));
+                                chip.classList.add('active');
+                                document.getElementById('research-form').dispatchEvent(new Event('submit'));
+                            };
+                            topicsContainer.appendChild(chip);
+                        });
+                        topicsSection.classList.remove('hidden');
+                    } else {
+                        uploadText.innerHTML = `<span style="color: var(--success);">✅ <strong>"${file.name}"</strong> loaded. Type your question below!</span>`;
+                        topicsSection.classList.add('hidden');
+                    }
+                    refreshUI();
+                } else {
+                    uploadText.innerHTML = `<span style="color: var(--error);">❌ ${data.message}</span>`;
+                }
+            } catch (err) {
+                uploadText.innerHTML = `<span style="color: var(--error);">❌ Network error. Is the server running?</span>`;
+            } finally {
+                uploadArea.classList.remove('processing');
+            }
+        }
+
+        // =============================================
+        // RENDER HISTORY PAGE
+        // =============================================
+        function renderHistory() {
+            const grid = document.getElementById('history-grid');
+            const history = getHistory();
+            const empty = document.getElementById('history-empty');
+
+            // Remove old cards (keep empty state element)
+            grid.querySelectorAll('.history-card').forEach(c => c.remove());
+
+            if (history.length === 0) {
+                empty.style.display = 'flex';
+                return;
+            }
+            empty.style.display = 'none';
+
+            history.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'history-card content-card';
+                const date = new Date(item.timestamp);
+                const timeStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' · ' + date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                card.innerHTML = `
+                    <div class="history-card-header">
+                        <span class="history-query">${escapeHtml(item.query)}</span>
+                        <span class="history-time">${timeStr}</span>
+                    </div>
+                    <p class="history-preview">${escapeHtml(item.preview)}</p>
+                    <div class="history-card-footer">
+                        <span class="history-duration">
+                            <span class="material-symbols-outlined" style="font-size: 14px;">timer</span>
+                            ${item.timeTaken || 0}s
+                        </span>
+                        <button class="history-view-btn" data-id="${item.id}">
+                            View Report
+                            <span class="material-symbols-outlined" style="font-size: 14px;">arrow_forward</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+
+                card.querySelector('.history-view-btn').addEventListener('click', () => {
+                    viewHistoryItem(item);
+                });
+            });
+        }
+
+        function viewHistoryItem(item) {
+            switchPage('research');
+            document.getElementById('topic').value = item.query;
+            const reportContent = document.getElementById('report-content');
+            const resultsContainer = document.getElementById('results-container');
+            const logContainer = document.getElementById('log-container');
+            const reportTitle = document.getElementById('report-title');
+
+            resultsContainer.classList.remove('hidden');
+            logContainer.innerHTML = '<div class="log-entry"><span class="log-timestamp">[HISTORY]</span> <span class="log-text">📜 Loaded from history</span></div>';
+            reportTitle.textContent = item.query;
+            marked.setOptions({ gfm: true, breaks: true });
+            reportContent.innerHTML = marked.parse(item.markdown);
+            reportContent.dataset.markdown = item.markdown;
+            wrapSectionsInCards(reportContent);
+        }
+
+        // Clear history
+        document.getElementById('clear-history-btn').addEventListener('click', () => {
+            if (confirm('Clear all research history?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem(STATS_KEY);
+                renderHistory();
+                refreshUI();
+            }
+        });
+
+        // =============================================
+        // CHART INSTANCES (for cleanup)
+        // =============================================
+        let chartActivity = null;
+        let chartDuration = null;
+        let chartSources = null;
+        let chartLength = null;
+
+        const chartColors = {
+            primary: '#7c3aed',
+            primaryLight: '#a78bfa',
+            primaryFaded: 'rgba(124, 58, 237, 0.15)',
+            accent: '#06b6d4',
+            accentFaded: 'rgba(6, 182, 212, 0.15)',
+            success: '#10b981',
+            successFaded: 'rgba(16, 185, 129, 0.15)',
+            pink: '#ec4899',
+            pinkFaded: 'rgba(236, 72, 153, 0.15)',
+            warning: '#f59e0b',
+            warningFaded: 'rgba(245, 158, 11, 0.15)',
+            text: '#94a3b8',
+            grid: 'rgba(255, 255, 255, 0.04)',
+            gridBorder: 'rgba(255, 255, 255, 0.06)',
+        };
+
+        // Chart.js global defaults
+        Chart.defaults.color = chartColors.text;
+        Chart.defaults.borderColor = chartColors.grid;
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.font.size = 11;
+        Chart.defaults.plugins.legend.labels.usePointStyle = true;
+        Chart.defaults.plugins.legend.labels.pointStyleWidth = 8;
+
+        // =============================================
+        // RENDER ANALYTICS PAGE
+        // =============================================
+        function renderAnalytics() {
+            const stats = getStats();
+            const history = getHistory();
+
+            document.getElementById('stat-total').textContent = stats.totalResearches;
+            document.getElementById('stat-pdfs').textContent = stats.pdfsUploaded;
+            document.getElementById('stat-topics').textContent = stats.topicsExtracted;
+
+            const avgTime = stats.totalResearches > 0 ? Math.round(stats.totalTime / stats.totalResearches) : 0;
+            document.getElementById('stat-avgtime').textContent = avgTime + 's';
+
+            renderCharts(history);
+            renderTopicCloud(history);
+            renderTimeline(history);
+        }
+
+        function renderCharts(history) {
+            // === 1. ACTIVITY BAR CHART (last 7 days) ===
+            if (chartActivity) chartActivity.destroy();
+            const actCtx = document.getElementById('chart-activity').getContext('2d');
+
+            const last7Days = [];
+            const activityCounts = [];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const key = d.toISOString().split('T')[0];
+                last7Days.push(d.toLocaleDateString('en-US', { weekday: 'short' }));
+                activityCounts.push(history.filter(h => h.timestamp && h.timestamp.startsWith(key)).length);
+            }
+
+            chartActivity = new Chart(actCtx, {
+                type: 'bar',
+                data: {
+                    labels: last7Days,
+                    datasets: [{
+                        label: 'Researches',
+                        data: activityCounts,
+                        backgroundColor: activityCounts.map((v, i) => {
+                            const gradient = actCtx.createLinearGradient(0, 0, 0, 250);
+                            gradient.addColorStop(0, chartColors.primary);
+                            gradient.addColorStop(1, chartColors.primaryFaded);
+                            return gradient;
+                        }),
+                        borderRadius: 6,
+                        borderSkipped: false,
+                        barThickness: 28,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1, padding: 8 },
+                            grid: { color: chartColors.grid },
+                            border: { display: false },
+                        },
+                        x: {
+                            grid: { display: false },
+                            border: { display: false },
+                            ticks: { padding: 4 },
+                        }
+                    }
+                }
+            });
+
+            // === 2. DURATION LINE CHART ===
+            if (chartDuration) chartDuration.destroy();
+            const durCtx = document.getElementById('chart-duration').getContext('2d');
+
+            const recentHistory = history.slice(0, 10).reverse();
+            const durLabels = recentHistory.map((h, i) => `#${i + 1}`);
+            const durData = recentHistory.map(h => h.timeTaken || 0);
+
+            const durGradient = durCtx.createLinearGradient(0, 0, 0, 250);
+            durGradient.addColorStop(0, 'rgba(6, 182, 212, 0.25)');
+            durGradient.addColorStop(1, 'rgba(6, 182, 212, 0.01)');
+
+            chartDuration = new Chart(durCtx, {
+                type: 'line',
+                data: {
+                    labels: durLabels,
+                    datasets: [{
+                        label: 'Duration (s)',
+                        data: durData,
+                        borderColor: chartColors.accent,
+                        backgroundColor: durGradient,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: chartColors.accent,
+                        pointBorderColor: '#0f0f17',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        borderWidth: 2.5,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { padding: 8 },
+                            grid: { color: chartColors.grid },
+                            border: { display: false },
+                        },
+                        x: {
+                            grid: { display: false },
+                            border: { display: false },
+                            ticks: { padding: 4 },
+                        }
+                    }
+                }
+            });
+
+            // === 3. SOURCE DOUGHNUT CHART ===
+            if (chartSources) chartSources.destroy();
+            const srcCtx = document.getElementById('chart-sources').getContext('2d');
+
+            const stats = getStats();
+            const srcLabels = ['PDF/Local', 'Arxiv', 'Web Search', 'LLM Knowledge'];
+            const srcData = [
+                stats.pdfsUploaded || 1,
+                Math.max(1, Math.round(stats.totalResearches * 0.7)),
+                Math.max(1, Math.round(stats.totalResearches * 0.85)),
+                Math.max(1, stats.totalResearches)
+            ];
+
+            chartSources = new Chart(srcCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: srcLabels,
+                    datasets: [{
+                        data: srcData,
+                        backgroundColor: [chartColors.primary, chartColors.accent, chartColors.pink, chartColors.success],
+                        borderColor: '#0f0f17',
+                        borderWidth: 3,
+                        hoverOffset: 8,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '68%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { padding: 15, font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+
+            // === 4. REPORT LENGTH AREA CHART ===
+            if (chartLength) chartLength.destroy();
+            const lenCtx = document.getElementById('chart-length').getContext('2d');
+
+            const lenData = recentHistory.map(h => (h.markdown || '').length);
+
+            const lenGradient = lenCtx.createLinearGradient(0, 0, 0, 250);
+            lenGradient.addColorStop(0, 'rgba(236, 72, 153, 0.2)');
+            lenGradient.addColorStop(1, 'rgba(236, 72, 153, 0.01)');
+
+            chartLength = new Chart(lenCtx, {
+                type: 'line',
+                data: {
+                    labels: durLabels,
+                    datasets: [{
+                        label: 'Characters',
+                        data: lenData,
+                        borderColor: chartColors.pink,
+                        backgroundColor: lenGradient,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: chartColors.pink,
+                        pointBorderColor: '#0f0f17',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        borderWidth: 2.5,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { padding: 8, callback: v => v >= 1000 ? (v/1000).toFixed(1) + 'k' : v },
+                            grid: { color: chartColors.grid },
+                            border: { display: false },
+                        },
+                        x: {
+                            grid: { display: false },
+                            border: { display: false },
+                            ticks: { padding: 4 },
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderTopicCloud(history) {
+            const cloud = document.getElementById('topic-cloud');
+            if (history.length > 0) {
+                cloud.innerHTML = '';
+                const uniqueTopics = [...new Set(history.map(h => h.query))].slice(0, 15);
+                uniqueTopics.forEach((t, i) => {
+                    const tag = document.createElement('span');
+                    tag.className = 'cloud-tag';
+                    tag.textContent = t;
+                    tag.style.fontSize = `${Math.max(0.75, 1.1 - i * 0.03)}rem`;
+                    tag.style.opacity = Math.max(0.5, 1 - i * 0.04);
+                    tag.addEventListener('click', () => {
+                        switchPage('research');
+                        document.getElementById('topic').value = t;
+                    });
+                    cloud.appendChild(tag);
+                });
+            }
+        }
+
+        function renderTimeline(history) {
+            const timeline = document.getElementById('analytics-timeline');
+            if (history.length > 0) {
+                timeline.innerHTML = '';
+                history.slice(0, 10).forEach(item => {
+                    const date = new Date(item.timestamp);
+                    const el = document.createElement('div');
+                    el.className = 'timeline-item';
+                    el.innerHTML = `
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="timeline-query">${escapeHtml(item.query)}</span>
+                            <span class="timeline-meta">${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} · ${item.timeTaken || 0}s</span>
+                        </div>
+                    `;
+                    timeline.appendChild(el);
+                });
+            }
+        }
+
+        // =============================================
+        // REFRESH ALL UI ELEMENTS
+        // =============================================
+        function refreshUI() {
+            const history = getHistory();
+            const stats = getStats();
+
+            // History count badge
+            document.getElementById('history-count').textContent = history.length;
+            document.getElementById('history-count').style.display = history.length > 0 ? 'flex' : 'none';
+
+            // Inline stats on research page
+            document.getElementById('stat-total-inline').textContent = stats.totalResearches;
+            document.getElementById('stat-pdfs-inline').textContent = stats.pdfsUploaded;
+
+            // Recent searches in sidebar
+            const recentList = document.getElementById('recent-list');
+            recentList.innerHTML = '';
+            if (history.length === 0) {
+                recentList.innerHTML = '<div class="recent-empty">No searches yet</div>';
+            } else {
+                history.slice(0, 7).forEach(item => {
+                    const el = document.createElement('button');
+                    el.className = 'recent-item';
+                    el.textContent = item.query.length > 35 ? item.query.substring(0, 35) + '...' : item.query;
+                    el.title = item.query;
+                    el.addEventListener('click', () => viewHistoryItem(item));
+                    recentList.appendChild(el);
+                });
+            }
+        }
+
+        // =============================================
+        // CARD FORMATTING FOR REPORT SECTIONS
+        // =============================================
+        function wrapSectionsInCards(container) {
+            const headings = Array.from(container.querySelectorAll('h2, h3'));
+            headings.forEach(heading => {
+                const text = heading.textContent.toLowerCase();
+                if (text.includes('important point') || text.includes('key takeaway') || text.includes('key finding') || text.includes('reference') || text.includes('source')) {
+                    const isRef = text.includes('reference') || text.includes('source');
+                    const card = document.createElement('div');
+                    card.className = `glass-card ${isRef ? 'ref-card' : 'important-card'}`;
+                    heading.parentNode.insertBefore(card, heading);
+                    card.appendChild(heading);
+                    let next = card.nextSibling;
+                    while(next && !['H1', 'H2', 'H3', 'H4'].includes(next.tagName)) {
+                        let toMove = next;
+                        next = next.nextSibling;
+                        card.appendChild(toMove);
+                    }
+                }
+            });
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Init
+        refreshUI();
+    </script>
+</body>
+</html>
